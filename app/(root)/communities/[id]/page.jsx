@@ -24,6 +24,7 @@ async function Page({ params }) {
         name={communityDetails.name}
         username={communityDetails.username}
         imgUrl={communityDetails.image}
+        members={communityDetails.members}
         bio={communityDetails.bio}
         type="Community"
       />
