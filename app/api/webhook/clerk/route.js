@@ -4,7 +4,7 @@
 
 // Resource: https://docs.svix.com/receiving/verifying-payloads/why
 // It's a good practice to verify webhooks. Above article shows why we should do it
-import { Webhook, WebhookRequiredHeaders } from "svix";
+import { Webhook } from "svix";
 import { headers } from "next/headers";
 
 import { NextResponse } from "next/server";
@@ -18,6 +18,16 @@ import {
 
 // Resource: https://clerk.com/docs/integration/webhooks#supported-events
 // Above document lists the supported events
+const EventTypes = {
+  type: [
+    "organization.created",
+    "organizationInvitation.created",
+    "organizationMembership.created",
+    "organizationMembership.deleted",
+    "organization.updated",
+    "organization.deleted",
+  ],
+};
 
 export const POST = async (request) => {
   const payload = await request.json();
@@ -29,11 +39,11 @@ export const POST = async (request) => {
     "svix-signature": header.get("svix-signature"),
   };
 
-  // Activitate Webhook in the Clerk Dashboard.
+  // Activate Webhook in the Clerk Dashboard.
   // After adding the endpoint, you'll see the secret on the right side.
   const wh = new Webhook(process.env.NEXT_CLERK_WEBHOOK_SECRET || "");
 
-  let evnt = null;
+  let evnt = EventTypes || null;
 
   try {
     evnt = wh.verify(JSON.stringify(payload), heads);
@@ -41,7 +51,7 @@ export const POST = async (request) => {
     return NextResponse.json({ message: err }, { status: 400 });
   }
 
-  const eventType = evnt;
+  const eventType = evnt?.type;
 
   // Listen organization creation event
   if (eventType === "organization.created") {
@@ -51,9 +61,7 @@ export const POST = async (request) => {
       evnt?.data ?? {};
 
     try {
-      // @ts-ignore
       await createCommunity(
-        // @ts-ignore
         id,
         name,
         slug,
