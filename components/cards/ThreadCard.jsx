@@ -92,7 +92,7 @@ const ThreadCard = ({
           className="flex items-center mt-5"
         >
           <p className="text-subtle-medium text-gray-1">
-            {formatDateString(createdAt)}- {community.name}
+            {formatDateString(createdAt)} - {community.name} Community
           </p>
           <Image
             src={community.image}

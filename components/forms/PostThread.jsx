@@ -35,7 +35,6 @@ const PostThread = ({ userId }) => {
   });
 
   const onSubmit = async (values) => {
-    console.log(organization);
     await createThread({
       text: values.thread,
       author: userId,

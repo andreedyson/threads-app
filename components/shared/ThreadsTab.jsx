@@ -1,10 +1,17 @@
-import { fetchUserPost } from "@/lib/actions/user.actions";
 import { redirect } from "next/navigation";
 import React from "react";
 import ThreadCard from "../cards/ThreadCard";
+import { fetchCommunityPosts } from "@/lib/actions/community.actions";
+import { fetchUserPosts } from "@/lib/actions/user.actions";
 
 const ThreadsTab = async ({ currentUserId, accountId, accountType }) => {
-  let res = await fetchUserPost(accountId);
+  let res;
+
+  if (accountType === "Community") {
+    res = await fetchCommunityPosts(accountId);
+  } else {
+    res = await fetchUserPosts(accountId);
+  }
 
   if (!res) redirect("/");
 

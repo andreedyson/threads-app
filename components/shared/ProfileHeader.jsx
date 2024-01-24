@@ -8,6 +8,7 @@ const ProfileHeader = ({
   username,
   imgUrl,
   bio,
+  type = "User" | "Community",
 }) => {
   return (
     <div className="flex flex-col justify-start w-full">
