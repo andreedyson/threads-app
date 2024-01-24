@@ -1,8 +1,8 @@
-import { redirect } from "next/navigation";
 import React from "react";
 import ThreadCard from "../cards/ThreadCard";
 import { fetchCommunityPosts } from "@/lib/actions/community.actions";
 import { fetchUserPosts } from "@/lib/actions/user.actions";
+import { redirect } from "next/navigation";
 
 const ThreadsTab = async ({ currentUserId, accountId, accountType }) => {
   let res;
@@ -33,7 +33,11 @@ const ThreadsTab = async ({ currentUserId, accountId, accountType }) => {
                   id: thread.author.id,
                 }
           }
-          community={thread.community}
+          community={
+            accountType === "Community"
+              ? { name: res.name, id: res.id, image: res.image }
+              : thread.community
+          }
           createdAt={thread.createdAt}
           comments={thread.children}
         />
